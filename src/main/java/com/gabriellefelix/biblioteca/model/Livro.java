@@ -56,4 +56,18 @@ public class Livro {
     public void setQuantidadePaginas(int quantidadePaginas) {
         this.quantidadePaginas = quantidadePaginas;
     }
+
+    public void emprestar() {
+        if (this.status == StatusLivro.EMPRESTADO) {
+            throw new IllegalStateException("O livro já está emprestado.");
+        }
+        status = StatusLivro.EMPRESTADO;
+    }
+
+    public void devolver() {
+        if (this.status == StatusLivro.DISPONIVEL) {
+            throw new IllegalStateException("O livro já está disponível.");
+        }
+        status = StatusLivro.DISPONIVEL;
+    }
 }
