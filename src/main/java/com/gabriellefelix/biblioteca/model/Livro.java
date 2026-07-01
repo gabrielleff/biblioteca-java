@@ -17,6 +17,18 @@ public class Livro {
         this.status = StatusLivro.DISPONIVEL;
     }
 
+    @Override
+    public String toString() {
+        return "Livro{" +
+                "titulo='" + titulo + '\'' +
+                ", autor='" + autor + '\'' +
+                ", isbn='" + isbn + '\'' +
+                ", anoPublicacao=" + anoPublicacao +
+                ", quantidadePaginas=" + quantidadePaginas +
+                ", status=" + status +
+                '}';
+    }
+
     public String getTitulo() {
         return titulo;
     }
