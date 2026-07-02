@@ -1,7 +1,14 @@
 package com.gabriellefelix.biblioteca;
+import com.gabriellefelix.biblioteca.model.Livro;
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Sistema de Biblioteca");
+        Livro livro = new Livro("Clean Code",
+                "Robert C. Martin",
+                "9780132350884",
+                2008,
+                464);
+
+        System.out.println(livro);
     }
 }
