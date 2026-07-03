@@ -61,5 +61,4 @@ public class EmprestimoRepository {
     public boolean remover(Emprestimo emprestimo) {
         return this.emprestimos.remove(emprestimo);
     }
-    }
 }
