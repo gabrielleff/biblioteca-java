@@ -121,4 +121,20 @@ public class BibliotecaService {
 
         return emprestimoRepository.buscarEmprestimosAtivosPorUsuario(usuario);
     }
+
+    public void cadastrarLivro(Livro livro) {
+        livroRepository.cadastrar(livro);
+    }
+
+    public void cadastrarUsuario(Usuario usuario) {
+        usuarioRepository.cadastrar(usuario);
+    }
+
+    public Livro buscarLivroPorIsbn(String isbn) {
+        return livroRepository.buscarPorIsbn(isbn);
+    }
+
+    public Usuario buscarUsuarioPorId(int id) {
+        return usuarioRepository.buscarPorId(id);
+    }
 }
