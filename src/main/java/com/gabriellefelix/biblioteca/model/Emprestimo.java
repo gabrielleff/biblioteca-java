@@ -6,8 +6,14 @@ public class Emprestimo {
     private final Usuario usuario;
     private final LocalDate dataEmprestimo;
     private LocalDate dataPrevistaDevolucao;
+    private LocalDate dataDevolucao;
 
     public Emprestimo(Livro livro, Usuario usuario) {
+
+        if (livro == null || usuario == null) {
+            throw new IllegalArgumentException("Livro e usuário são obrigatórios.");
+        }
+
         this.livro = livro;
         this.usuario = usuario;
         this.dataEmprestimo = LocalDate.now();
@@ -21,6 +27,7 @@ public class Emprestimo {
                 ", usuario=" + usuario +
                 ", dataEmprestimo=" + dataEmprestimo +
                 ", dataPrevistaDevolucao=" + dataPrevistaDevolucao +
+                ", dataDevolucao=" + dataDevolucao +
                 '}';
     }
 
@@ -41,6 +48,9 @@ public class Emprestimo {
         return dataPrevistaDevolucao;
     }
 
+    public LocalDate getDataDevolucao() {
+        return dataDevolucao;
+    }
 
     public void renovarPrazo() {
         if (estaAtrasado()) {
@@ -51,8 +61,19 @@ public class Emprestimo {
     }
 
     public boolean estaAtrasado() {
-        LocalDate hoje = LocalDate.now();
+        return estaAtivo() &&
+                LocalDate.now().isAfter(dataPrevistaDevolucao);
+    }
 
-        return hoje.isAfter(this.dataPrevistaDevolucao);
+    public void finalizarEmprestimo() {
+        if (!estaAtivo()) {
+            throw new IllegalStateException("O empréstimo já foi finalizado.");
+        }
+
+        this.dataDevolucao = LocalDate.now();
+    }
+
+    public boolean estaAtivo() {
+        return dataDevolucao == null;
     }
 }
