@@ -1,6 +1,7 @@
 package com.gabriellefelix.biblioteca.repository;
 
 import com.gabriellefelix.biblioteca.model.Livro;
+import com.gabriellefelix.biblioteca.model.StatusLivro;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,5 +68,18 @@ public class LivroRepository {
         }
 
         return false;
+    }
+
+    public List<Livro> listarDisponiveis() {
+
+        List<Livro> resultado = new ArrayList<>();
+
+        for (Livro livro : this.livros) {
+            if (livro.getStatus() == StatusLivro.DISPONIVEL) {
+                resultado.add(livro);
+            }
+        }
+
+        return resultado;
     }
 }

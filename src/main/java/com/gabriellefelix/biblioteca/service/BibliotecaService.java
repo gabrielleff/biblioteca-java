@@ -9,6 +9,8 @@ import com.gabriellefelix.biblioteca.model.Livro;
 import com.gabriellefelix.biblioteca.model.StatusLivro;
 import com.gabriellefelix.biblioteca.model.Usuario;
 
+import java.util.List;
+
 public class BibliotecaService {
     private final LivroRepository livroRepository;
     private final UsuarioRepository usuarioRepository;
@@ -49,6 +51,7 @@ public class BibliotecaService {
         emprestimoRepository.cadastrar(emprestimo);
     }
 
+
     public void devolverLivro(String isbn) {
 
         Livro livro = livroRepository.buscarPorIsbn(isbn);
@@ -61,13 +64,61 @@ public class BibliotecaService {
             throw new IllegalStateException("O livro já está disponível.");
         }
 
+        Emprestimo emprestimo = emprestimoRepository.buscarEmprestimoAtivoPorLivro(livro);
+
+        if (emprestimo == null) {
+            throw new IllegalStateException("Não existe empréstimo ativo para esse livro.");
+        }
+
         livro.devolver();
 
-        List<Emprestimo> emprestimos = emprestimoRepository.buscarPorLivro(livro);
+        emprestimo.finalizarEmprestimo();
+    }
 
-        if (!emprestimos.isEmpty()) {
-            Emprestimo ultimoEmprestimo = emprestimos.get(emprestimos.size() - 1);
-            emprestimoRepository.remover(ultimoEmprestimo);
+    public void renovarEmprestimo(String isbn) {
+
+        Livro livro = livroRepository.buscarPorIsbn(isbn);
+
+        if (livro == null) {
+            throw new IllegalArgumentException("Livro não encontrado.");
         }
+
+        Emprestimo emprestimo = emprestimoRepository.buscarEmprestimoAtivoPorLivro(livro);
+
+        if (emprestimo == null) {
+            throw new IllegalStateException("Não existe empréstimo ativo para esse livro.");
+        }
+
+        emprestimo.renovarPrazo();
+    }
+
+    public List<Emprestimo> listarEmprestimosAtrasados() {
+        return emprestimoRepository.listarAtrasados();
+    }
+
+    public List<Livro> listarLivrosDisponiveis() {
+        return livroRepository.listarDisponiveis();
+    }
+
+    public List<Emprestimo> buscarHistoricoUsuario(int idUsuario) {
+
+        Usuario usuario = usuarioRepository.buscarPorId(idUsuario);
+
+        if (usuario == null) {
+            throw new IllegalArgumentException("Usuário não encontrado.");
+        }
+
+        return emprestimoRepository.buscarPorUsuario(usuario);
+    }
+
+    public List<Emprestimo> buscarEmprestimosAtivosUsuario(int idUsuario) {
+
+        Usuario usuario = usuarioRepository.buscarPorId(idUsuario);
+
+        if (usuario == null) {
+            throw new IllegalArgumentException("Usuário não encontrado.");
+        }
+
+        return emprestimoRepository.buscarEmprestimosAtivosPorUsuario(usuario);
     }
 }

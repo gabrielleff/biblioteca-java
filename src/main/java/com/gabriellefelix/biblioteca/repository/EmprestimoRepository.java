@@ -61,4 +61,32 @@ public class EmprestimoRepository {
     public boolean remover(Emprestimo emprestimo) {
         return this.emprestimos.remove(emprestimo);
     }
+
+    public Emprestimo buscarEmprestimoAtivoPorLivro(Livro livro) {
+
+        for (Emprestimo emprestimo : this.emprestimos) {
+            if (emprestimo.getLivro().getIsbn().equals(livro.getIsbn())
+                    && emprestimo.estaAtivo()) {
+                return emprestimo;
+            }
+        }
+
+        return null;
+    }
+
+    public List<Emprestimo> buscarEmprestimosAtivosPorUsuario(Usuario usuario) {
+
+        List<Emprestimo> resultado = new ArrayList<>();
+
+        for (Emprestimo emprestimo : this.emprestimos) {
+
+            if (emprestimo.getUsuario().getId() == usuario.getId()
+                    && emprestimo.estaAtivo()) {
+
+                resultado.add(emprestimo);
+            }
+        }
+
+        return resultado;
+    }
 }
