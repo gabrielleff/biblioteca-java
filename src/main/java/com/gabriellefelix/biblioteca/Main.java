@@ -39,16 +39,33 @@ public class Main {
         bibliotecaService.cadastrarUsuario(usuario1);
 
 
+// EMPRESTAR LIVRO
         bibliotecaService.emprestarLivro(
                 "9780132350884",
                 usuario1.getId()
         );
 
+        System.out.println("=== Após empréstimo ===");
+        System.out.println(livro1);
+        System.out.println(bibliotecaService.buscarHistoricoUsuario(usuario1.getId()));
 
-        System.out.println("Livro emprestado com sucesso!");
 
-        System.out.println(
-                bibliotecaService.buscarHistoricoUsuario(usuario1.getId())
+// RENOVAR EMPRÉSTIMO
+        bibliotecaService.renovarEmprestimo(
+                "9780132350884"
         );
+
+        System.out.println("\n=== Após renovação ===");
+        System.out.println(bibliotecaService.buscarHistoricoUsuario(usuario1.getId()));
+
+
+// DEVOLVER LIVRO
+        bibliotecaService.devolverLivro(
+                "9780132350884"
+        );
+
+        System.out.println("\n=== Após devolução ===");
+        System.out.println(livro1);
+        System.out.println(bibliotecaService.buscarHistoricoUsuario(usuario1.getId()));
     }
 }
